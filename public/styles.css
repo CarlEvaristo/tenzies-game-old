@@ -47,7 +47,7 @@ h1{
 }
 .diceContainer{
     display: grid;
-    grid-template: 80px 80px / 80px 80px 80px 80px 80px ;
+    grid-template: 60px 60px / 60px 60px 60px 60px 60px ;
     gap:10px;
     padding:20px;
 }
@@ -60,6 +60,7 @@ h1{
     align-items: center;
     background-color: #fff;
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.155);
+    cursor: pointer;
 }
 .dice p {
     font-size: 3rem;
@@ -86,6 +87,7 @@ button:hover {
 }
 button:active {
     background-color: #1d03c7;
+    box-shadow: inset 3px 5px 5px rgba(0, 0, 0, 0.155);
 }
 @media (max-width:800px) {
     main{

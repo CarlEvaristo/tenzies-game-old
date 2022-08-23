@@ -5,18 +5,12 @@ function Main(){
     const [turn, setTurn] = React.useState(0)
     const [isFinished, setIsFinished] = React.useState(false)
     const [diceValue, setDiceValue] = React.useState(0)
-    const [allDice, setAllDice] = React.useState([
-        {id: 1, value: getRandomDice(), isFinished: false},
-        {id: 2, value: getRandomDice(), isFinished: false},
-        {id: 3, value: getRandomDice(), isFinished: false},
-        {id: 4, value: getRandomDice(), isFinished: false},
-        {id: 5, value: getRandomDice(), isFinished: false},
-        {id: 6, value: getRandomDice(), isFinished: false},
-        {id: 7, value: getRandomDice(), isFinished: false},
-        {id: 8, value: getRandomDice(), isFinished: false},
-        {id: 9, value: getRandomDice(), isFinished: false},
-        {id: 10, value: getRandomDice(), isFinished: false},
-    ])
+    const [allDice, setAllDice] = React.useState(newDiceArray())
+
+
+    function newDiceArray() {
+        return new Array(10).fill(null).map((item,index)=> ({id: index+1, value: getRandomDice(), isFinished: false}))
+    }
 
     function getRandomDice(){
         return (
@@ -70,7 +64,7 @@ function Main(){
             <div className="diceContainer">
                 {diceElements}
             </div>
-            <button onClick={handleThrow} className={isFinished && "disabled"}>Roll</button>
+            <button onClick={handleThrow} className={isFinished ? "disabled" : ""}>Roll</button>
             <p style={{display: !isFinished ? "none" : "block"}}>Number of throws: {turn}</p>
             {/* style={{pointer-events: isFinished && "none"}} */}
         </main>
