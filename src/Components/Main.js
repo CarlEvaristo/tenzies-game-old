@@ -1,5 +1,6 @@
 import React from "react"
 import Dice from "./Dice"
+import Confetti from 'react-confetti'
 
 function Main(){
     const [turn, setTurn] = React.useState(0)
@@ -7,9 +8,15 @@ function Main(){
     const [diceValue, setDiceValue] = React.useState(0)
     const [allDice, setAllDice] = React.useState(newDiceArray())
 
-
     function newDiceArray() {
         return new Array(10).fill(null).map((item,index)=> ({id: index+1, value: getRandomDice(), isFinished: false}))
+    }
+
+    function newGame(){
+        setAllDice(newDiceArray())
+        setTurn(0)
+        setDiceValue(0)
+        setIsFinished(false)
     }
 
     function getRandomDice(){
@@ -59,14 +66,14 @@ function Main(){
 
     return(
         <main>
+            {isFinished && <Confetti />}
             <h1>Tenzies</h1>
             <p className="subText">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
             <div className="diceContainer">
                 {diceElements}
             </div>
-            <button onClick={handleThrow} className={isFinished ? "disabled" : ""}>Roll</button>
+            {isFinished ? <button onClick={newGame}>New Game</button> : <button onClick={handleThrow}>Roll</button>}
             <p style={{display: !isFinished ? "none" : "block"}}>Number of throws: {turn}</p>
-            {/* style={{pointer-events: isFinished && "none"}} */}
         </main>
     )
 }
