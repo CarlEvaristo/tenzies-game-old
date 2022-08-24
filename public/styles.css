@@ -72,22 +72,32 @@ h1{
     color: #c0c0c0;
     background-color: #dfdfdf;
 }
-button {
+.inline {
+    display:flex;
+    align-items: center;
+}
+form input,button {
+    cursor: pointer;
     margin:1em;
     padding:0.5em 2em;
     border: none;
     background-color: #5035FF;
     border-radius: 8px;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #fff;
     box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.155);
 }
-button:hover {
+form button:hover {
     background-color: #3679ff;
+    width:50%;
 }
-button:active {
+form button:active {
     background-color: #1d03c7;
     box-shadow: inset 3px 5px 5px rgba(0, 0, 0, 0.155);
+}
+form input {
+    background-color: #ffffff;
+    color: #000;
 }
 @media (max-width:800px) {
     main{

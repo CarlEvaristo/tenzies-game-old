@@ -7,6 +7,7 @@ function Main(){
     const [isFinished, setIsFinished] = React.useState(false)
     const [diceValue, setDiceValue] = React.useState(0)
     const [allDice, setAllDice] = React.useState(newDiceArray())
+    const [playerName, setName] = React.useState("")
 
     function newDiceArray() {
         return new Array(10).fill(null).map((item,index)=> ({id: index+1, value: getRandomDice(), isFinished: false}))
@@ -17,6 +18,7 @@ function Main(){
         setTurn(0)
         setDiceValue(0)
         setIsFinished(false)
+        setName("")
     }
 
     function getRandomDice(){
@@ -64,6 +66,17 @@ function Main(){
         )
     })
 
+    function handleSubmit(event) {
+        event.preventDefault()
+        console.log(playerName)
+    }
+
+    function handleChange(event) {
+        event.preventDefault()
+        const {name, value} = event.target
+        setName(value)
+    }
+
     return(
         <main>
             {isFinished && <Confetti />}
@@ -72,8 +85,18 @@ function Main(){
             <div className="diceContainer">
                 {diceElements}
             </div>
-            {isFinished ? <button onClick={newGame}>New Game</button> : <button onClick={handleThrow}>Roll</button>}
-            <p style={{display: !isFinished ? "none" : "block"}}>Number of throws: {turn}</p>
+            {isFinished ? 
+                <>
+                    <div className="inline"><p>Your Score: {turn} rolls</p><button onClick={newGame}>New Game</button></div>
+                    <form className="inline" onSubmit={handleSubmit}>	
+                        <input type="text" name="name" placeholder="Your Name" onChange={handleChange} />  
+                        <button>Save Score</button>
+                    </form>
+                </> : 
+                <button onClick={handleThrow}>Roll</button>}
+            <p>High Score:</p>
+            <ol className="highScore">
+            </ol>
         </main>
     )
 }
