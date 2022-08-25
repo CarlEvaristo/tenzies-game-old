@@ -99,6 +99,9 @@ form input {
     background-color: #ffffff;
     color: #000;
 }
+ol {
+    margin-top:0;
+}
 @media (max-width:800px) {
     main{
         width: 95vw;

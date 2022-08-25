@@ -1,24 +1,66 @@
 import React from "react"
 import Dice from "./Dice"
 import Confetti from 'react-confetti'
+import Highscore from "./Highscore"
 
 function Main(){
     const [turn, setTurn] = React.useState(0)
     const [isFinished, setIsFinished] = React.useState(false)
     const [diceValue, setDiceValue] = React.useState(0)
     const [allDice, setAllDice] = React.useState(newDiceArray())
-    const [playerName, setName] = React.useState("")
+    const [score, setScore] = React.useState({
+        name:"",
+        score:0
+    })
+    const [highScore, setHighScore] = React.useState([])
+
+    React.useEffect(() => {
+        fetch("/api")
+          .then((res) => res.json())
+          .then((data) => setHighScore(data))
+      })
+
+
+    function handleSubmit(event) {
+        event.preventDefault()
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify(score),
+            redirect: "follow", 
+            mode: "cors",
+            cache: "no-cache", 
+            credentials: "same-origin"
+        };
+        fetch("/api", requestOptions)
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+    }
+
+    function handleChange(event) {
+        event.preventDefault()
+        const {name, value} = event.target
+        setScore({
+            name:value,
+            score:turn
+        })  
+    }
 
     function newDiceArray() {
         return new Array(10).fill(null).map((item,index)=> ({id: index+1, value: getRandomDice(), isFinished: false}))
-    }
+    }                                                           
 
     function newGame(){
         setAllDice(newDiceArray())
         setTurn(0)
         setDiceValue(0)
         setIsFinished(false)
-        setName("")
+        setScore({
+            name:"",
+            score:0
+        })      
     }
 
     function getRandomDice(){
@@ -30,7 +72,7 @@ function Main(){
     React.useEffect(()=>{
         let finishedArray = allDice.filter(item => item.isFinished)
         finishedArray.length === 1 && setDiceValue(finishedArray[0].value)
-        finishedArray.length === 10 && setIsFinished(true)
+        finishedArray.length === 10 && setIsFinished(true)                    
     }, [allDice])
 
 
@@ -66,16 +108,7 @@ function Main(){
         )
     })
 
-    function handleSubmit(event) {
-        event.preventDefault()
-        console.log(playerName)
-    }
 
-    function handleChange(event) {
-        event.preventDefault()
-        const {name, value} = event.target
-        setName(value)
-    }
 
     return(
         <main>
@@ -94,11 +127,10 @@ function Main(){
                     </form>
                 </> : 
                 <button onClick={handleThrow}>Roll</button>}
-            <p>High Score:</p>
-            <ol className="highScore">
-            </ol>
+                <Highscore highScore={highScore} />
         </main>
     )
 }
 
 export default Main
+
